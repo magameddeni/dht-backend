@@ -1,6 +1,7 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Category } from 'src/category/category.model';
+import { Shop } from 'src/shop/shop.model';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -9,30 +10,11 @@ export class Product {
   @Prop()
   productName: string;
 
-  @Prop(
-    raw([
-      {
-        key: { type: String, required: true },
-        link: { type: String, required: true },
-      },
-    ]),
-  )
-  images: { key: string; link: string }[];
-
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Category.name }])
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }])
   categories: Category[];
 
-  @Prop({ required: true })
-  regularPrice: number;
-
-  @Prop({ required: true, default: 0 })
-  discountPrice: number;
-
-  @Prop()
-  description: string;
-
-  @Prop({ required: true })
-  stock: number;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Shop' })
+  shop: Shop;
 
   @Prop(
     raw([
@@ -45,7 +27,4 @@ export class Product {
   characteristics: { title: string; value: string[] }[];
 }
 
-// @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Courier' })
-// courier: Courier;
-
-export const PorductSchema = SchemaFactory.createForClass(Product);
+export const ProductSchema = SchemaFactory.createForClass(Product);

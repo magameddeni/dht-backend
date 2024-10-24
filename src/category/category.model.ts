@@ -8,6 +8,9 @@ export class Category {
   @Prop({ required: true })
   title: string;
 
+  @Prop({ required: true, type: Number })
+  nesting: number;
+
   @Prop({ required: true })
   icon: string;
 }

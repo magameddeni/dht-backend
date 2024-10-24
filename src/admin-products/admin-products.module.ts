@@ -2,11 +2,18 @@ import { Module } from '@nestjs/common';
 import { AdminProductsController } from './admin-products.controller';
 import { AdminProductsService } from './admin-products.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PorductSchema, Product } from 'src/products/product.model';
+import { ProductSchema, Product } from 'src/products/product.model';
+import {
+  ProductVariant,
+  ProductVariantSchema,
+} from 'src/products/product-variant.model';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Product.name, schema: PorductSchema }]),
+    MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]),
+    MongooseModule.forFeature([
+      { name: ProductVariant.name, schema: ProductVariantSchema },
+    ]),
   ],
   controllers: [AdminProductsController],
   providers: [AdminProductsService],

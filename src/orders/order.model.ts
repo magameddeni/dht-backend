@@ -1,6 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Product } from 'src/products/product.model';
+import { Product } from 'src/products/models/product.model';
 import { User } from 'src/user/user.model';
 import { orderStatus } from './constants';
 

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AdminProductsController } from './admin-products.controller';
 import { AdminProductsService } from './admin-products.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ProductSchema, Product } from 'src/products/product.model';
+import { ProductSchema, Product } from 'src/products/models/product.model';
 import {
   ProductVariant,
   ProductVariantSchema,
-} from 'src/products/product-variant.model';
+} from 'src/products/models/product-variant.model';
 
 @Module({
   imports: [

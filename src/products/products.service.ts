@@ -1,5 +1,5 @@
 import { Get, Injectable } from '@nestjs/common';
-import { Product, ProductDocument } from './product.model';
+import { Product, ProductDocument } from './models/product.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { toObjectId } from 'src/utils/toObjectId';
@@ -13,9 +13,7 @@ export class ProductsService {
   @Get()
   async getProduct(productId: string) {
     const data = await this.productsModel.aggregate([
-      {
-        $match: { _id: toObjectId(productId) },
-      },
+      { $match: { _id: toObjectId(productId) } },
       {
         $lookup: {
           as: 'colors',
@@ -48,11 +46,7 @@ export class ProductsService {
                 localField: '_id',
               },
             },
-            {
-              $unwind: {
-                path: '$similarProducts',
-              },
-            },
+            { $unwind: { path: '$similarProducts' } },
             {
               $addFields: {
                 categoryId: '$$categoryId',
@@ -80,6 +74,37 @@ export class ProductsService {
               },
             },
             { $limit: 20 },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          as: 'reviews',
+          foreignField: 'productId',
+          localField: '_id',
+          from: 'reviews',
+          pipeline: [
+            {
+              $lookup: {
+                as: 'reviewer',
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+              },
+            },
+            { $unwind: '$reviewer' },
+            {
+              $group: {
+                _id: '$_id',
+                color: { $first: '$color' },
+                reviewer: { $first: '$reviewer.name' },
+                disAdvantages: { $first: '$disAdvantages' },
+                advantages: { $first: '$advantages' },
+                comment: { $first: '$comment' },
+              },
+            },
+            { $limit: 3 },
+            { $sort: { createdAt: 1 } },
           ],
         },
       },

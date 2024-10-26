@@ -1,6 +1,8 @@
 import { IsArray, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
-class Image {
+export class ValidateCLassImage {
+  type?: string;
+
   @IsString()
   link: string;
 
@@ -18,7 +20,7 @@ class Color {
 export class CreateProductVariant {
   @IsArray()
   @IsNotEmpty()
-  images: Image[];
+  images: ValidateCLassImage[];
 
   @IsNotEmpty()
   color: Color;

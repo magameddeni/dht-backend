@@ -12,7 +12,10 @@ export class ProductsController {
   }
 
   @Get('/category/:categoryId')
-  get(@Query() params: any, @Param('categoryId') categoryId: string) {
+  get(
+    @Query() params: any,
+    @Param('categoryId', IdValidationPipe) categoryId: string,
+  ) {
     return this.productService.get({ categoryId, ...params });
   }
 }
